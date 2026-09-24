@@ -1,0 +1,34 @@
+# dependencies
+node_modules
+.pnpm-store
+
+# next.js / build
+.next
+out
+build
+coverage
+
+# lockfiles / generated
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+next-env.d.ts
+*.tsbuildinfo
+
+# agent skill docs (nested markdown fences break under Prettier)
+.agents
+
+# MSW generated worker — integrity checksum must stay intact
+public/mockServiceWorker.js
+
+# next-intl generated ICU argument types, beside each English catalog
+**/messages/*.d.json.ts
+
+# StyleX vars generated from Tokens Studio JSON
+tokens/generated/
+
+# env / misc
+.env*
+!.env.example
+.vercel
+.DS_Store

@@ -1,0 +1,19 @@
+{
+  "Error": {
+    "description": "Страница оборвалась до отрисовки.",
+    "title": "Не удалось загрузить",
+    "tryAgain": "Попробовать снова"
+  },
+  "HomePage": {
+    "title": "В разработке"
+  },
+  "Metadata": {
+    "description": "Личный сайт Юрия Черкашина.",
+    "title": "Shinworks"
+  },
+  "NotFound": {
+    "description": "Не найдено",
+    "home": "На главную",
+    "title": "Не найдено"
+  }
+}

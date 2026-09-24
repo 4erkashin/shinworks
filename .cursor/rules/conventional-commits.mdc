@@ -1,0 +1,18 @@
+---
+description: Conventional commit messages; do not skip the git hook
+alwaysApply: true
+---
+
+# Conventional commits
+
+Commit messages follow `conventional-commits.json` (types and git prefixes). This repo's `commit-msg` hook enforces that file. The README **Commit messages** section explains type, scope, and `!`.
+
+```
+feat: add password reset
+fix(api): handle empty payload
+feat!: drop v1 routes
+```
+
+`feat` / `fix` / `!` must match the change (feature, bugfix, breaking). Other types have no version meaning.
+
+Run `git commit` so the hook can validate. Do not skip git hooks (`--no-verify` or equivalent).

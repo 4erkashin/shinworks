@@ -1,0 +1,85 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v.*"
+
+concurrency:
+  group: production-release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Require a commit from main
+        run: git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test:unit
+
+  storybook:
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+    env:
+      VERCEL_ORG_ID: team_YrVcbYkLqoCTzSAZ7j4pJHNC
+      VERCEL_PROJECT_ID: prj_FH1ivQlxf7TAW2eVBlstRO5UiXgj
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install Vercel CLI
+        run: npm install --global vercel@59.23.2
+      - name: Deploy Storybook
+        id: deploy
+        run: |
+          url=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+  app:
+    needs: storybook
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://nextjs-template-theta-ten.vercel.app/
+    env:
+      VERCEL_ORG_ID: team_YrVcbYkLqoCTzSAZ7j4pJHNC
+      VERCEL_PROJECT_ID: prj_AOUtpu53eTTvAKgfxm2QafOpyJQ9
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install Vercel CLI
+        run: npm install --global vercel@59.23.2
+      - name: Deploy app
+        run: vercel deploy --prod --yes --token="$VERCEL_TOKEN"
+
+  github-release:
+    needs: app
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --verify-tag --generate-notes --title "$GITHUB_REF_NAME"

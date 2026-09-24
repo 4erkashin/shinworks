@@ -1,0 +1,4 @@
+{
+  "types": ["feat", "fix", "docs", "chore", "refactor", "test", "ci", "perf"],
+  "exceptions": ["fixup!", "squash!", "Merge ", "Revert "]
+}

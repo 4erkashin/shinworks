@@ -1,0 +1,62 @@
+/**
+ * First mention locks cascade-layer order: `resets` (modern-normalize),
+ * then `preflight` (UA block spacing and link chrome off), under
+ * StyleX's `priority*`
+ * buckets. Name them here so Storybook's `/virtual:stylex.css` cannot
+ * create `priority*` first and put normalize on top of StyleX.
+ *
+ * StyleX numbers those buckets in order of the rules it emits;
+ * this list is a pre-order, not a cap at 9.
+ */
+@layer resets, preflight, priority1, priority2, priority3, priority4,
+  priority5, priority6, priority7, priority8, priority9;
+
+@import "modern-normalize/modern-normalize.css" layer(resets);
+
+/**
+ * UA margins, heading size/weight, and link color/underline are not
+ * on the space, type, or color scale. StyleX still wins: this layer
+ * sits under `priority*`.
+ */
+@layer preflight {
+  blockquote,
+  dl,
+  dd,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  hr,
+  figure,
+  p,
+  pre {
+    margin: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  ol,
+  ul,
+  menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+}
+
+@stylex;

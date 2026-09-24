@@ -1,0 +1,19 @@
+{
+  "Error": {
+    "description": "Сторінка обірвалася до відтворення.",
+    "title": "Не вдалося відкрити",
+    "tryAgain": "Ще раз"
+  },
+  "HomePage": {
+    "title": "У розробці"
+  },
+  "Metadata": {
+    "description": "Особистий сайт Юрія Черкашина.",
+    "title": "Shinworks"
+  },
+  "NotFound": {
+    "description": "Не знайдено",
+    "home": "На головну",
+    "title": "Не знайдено"
+  }
+}

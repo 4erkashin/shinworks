@@ -1,0 +1,19 @@
+{
+  "Error": {
+    "description": "A página falhou antes de poder ser exibida.",
+    "title": "Não pôde ser carregada",
+    "tryAgain": "Tentar novamente"
+  },
+  "HomePage": {
+    "title": "Em construção"
+  },
+  "Metadata": {
+    "description": "Site pessoal de Iurii Cherkashin.",
+    "title": "Shinworks"
+  },
+  "NotFound": {
+    "description": "Não encontrado",
+    "home": "Início",
+    "title": "Não encontrado"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "Error": {
+    "description": "The page failed before it could render.",
+    "title": "Could not be loaded",
+    "tryAgain": "Try again"
+  },
+  "HomePage": {
+    "title": "Under construction"
+  },
+  "Metadata": {
+    "description": "Personal site of Iurii Cherkashin.",
+    "title": "Shinworks"
+  },
+  "NotFound": {
+    "description": "Not found",
+    "home": "Home",
+    "title": "Not found"
+  }
+}

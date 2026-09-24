@@ -1,0 +1,20 @@
+---
+description: Do not invent low-value tests; follow the keep bar
+alwaysApply: true
+---
+
+# Testing discipline
+
+Do **not** add tests by default. More tests here have been harmful than helpful when they only assert classNames, testids, or thin UI wiring.
+
+Write or keep a test only when at least one is true:
+
+1. **User asked / seam agreed** — an explicit request, or seams confirmed before writing.
+2. **Duplicated truth that can drift** — the same fact must stay in sync across files. Prefer these over hoping someone notices.
+3. **Non-obvious pure logic** with an **independent** expected value (worked example / known literal), not a tautology that recomputes the implementation.
+
+Do not write: className/testid/presence assertions, snapshots that lock markup, tests that only restate the code, coverage tests for thin UI wiring, or assertions against hardcoded copy.
+
+Copy lives in `messages/*.json` (next-intl). A test that greps English (or any locale's) wording, or pastes a catalog string into an expect, is a tautology and breaks on every rewrite. Catalogs are the source of truth; do not re-test the words.
+
+When unsure: **skip the test**.

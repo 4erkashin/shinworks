@@ -1,0 +1,56 @@
+# Missing key = unreviewed (pnpm prompts / can fail the install).
+# true = run that package's install/postinstall.
+# false = skip it. Don't delete a key to opt out.
+allowBuilds:
+  # After install, esbuild runs a short script.
+  # The script copies that native file onto bin/esbuild inside the esbuild package.
+  # Then Vite and Storybook can call esbuild and get the real program.
+  # If we set esbuild: false, the copy does not happen.
+  # Vite and Storybook then fail because bin/esbuild is missing.
+  # That is why this repo allows the script.
+  esbuild: true
+
+  # This repo uses ESLint.
+  # The TypeScript import resolver (eslint-import-resolver-typescript) must find the real file for each import.
+  # That resolver uses unrs-resolver.
+  # Sometimes the optional package is missing.
+  # Then unrs-resolver runs a short script. The script downloads the .node file and puts it in place.
+  unrs-resolver: true
+
+  # After install, lefthook runs a short script.
+  # The script installs git hooks in this repo.
+  # When CI=true, the script does nothing.
+  lefthook: true
+
+  # Next uses sharp for next/image.
+  # The native program is already in a prebuilt package, named like @img/sharp-darwin-arm64.
+  # We do not need the install script.
+  # We still list sharp here.
+  # If the key is missing, pnpm treats the script as unreviewed and the install fails.
+  sharp: false
+
+  # next-intl uses @parcel/watcher to watch files.
+  # The native program is already in a prebuilt package, named like @parcel/watcher-darwin-arm64.
+  # The install script does nothing unless you ask it to build from source.
+  # We do not need the install script.
+  "@parcel/watcher": false
+
+  # next-intl uses @swc/core to extract messages.
+  # The native program is already in a prebuilt package, named like @swc/core-darwin-arm64.
+  # Next itself compiles with @next/swc. It does not use this package.
+  # The install script only tries a wasm fallback if the native file is missing.
+  # We do not need the install script.
+  "@swc/core": false
+
+  # This repo uses MSW to mock HTTP.
+  # After install, msw copies mockServiceWorker.js into public.
+  # The same msw version copies the same bytes, so git does not change.
+  msw: true
+
+# One copy of React types for the whole tree.
+# package.json only pins the direct deps;
+# next / @types/react-dom / others can still nest a different patch.
+# Keep these in lockstep with package.json when bumping React types.
+overrides:
+  "@types/react": 19.2.18
+  "@types/react-dom": 19.2.5

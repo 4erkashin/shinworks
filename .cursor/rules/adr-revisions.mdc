@@ -1,0 +1,10 @@
+---
+description: Revise an ADR by editing that file
+alwaysApply: true
+---
+
+# ADR revisions
+
+When a recorded decision changes, edit the ADR that already records it. That same file states the decision that now stands, including why the previous shape was dropped.
+
+A new number is for a decision that does not already have an ADR.

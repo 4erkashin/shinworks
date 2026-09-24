@@ -1,0 +1,15 @@
+---
+description: Named imports from react (values and types)
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# React imports
+
+Treat `react` like any other package: import the names you use. Type-only names are type imports (`import type` or an inline `type` specifier, matching `@typescript-eslint/consistent-type-imports`).
+
+```ts
+import { type ReactNode, useState } from "react";
+
+type Props = { children: ReactNode };
+```

@@ -1,0 +1,6 @@
+{
+  "CookbookIntl": {
+    "addItem": "Add item",
+    "itemCount": "{count, plural, =0 {No items} one {# item} other {# items}}"
+  }
+}

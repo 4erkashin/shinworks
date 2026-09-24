@@ -1,0 +1,6 @@
+{
+  "CookbookIntl": {
+    "addItem": "Додати елемент",
+    "itemCount": "{count, plural, =0 {Немає елементів} one {# елемент} few {# елементи} many {# елементів} other {# елемента}}"
+  }
+}

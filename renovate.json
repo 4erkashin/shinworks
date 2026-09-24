@@ -1,0 +1,102 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "rangeStrategy": "pin",
+  "schedule": ["* * * * 1"],
+  "minimumReleaseAge": "3 days",
+  "internalChecksFilter": "strict",
+  "prCreation": "not-pending",
+  "automerge": false,
+  "labels": ["dependencies"],
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["* * * * 1"]
+  },
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "minimumReleaseAge": null,
+    "labels": ["dependencies", "security"]
+  },
+  "packageRules": [
+    {
+      "description": "Next family non-major",
+      "groupName": "next-family",
+      "matchPackageNames": [
+        "next",
+        "eslint-config-next",
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "matchUpdateTypes": ["patch", "minor"]
+    },
+    {
+      "description": "Next family major — run npx @next/codemod upgrade on the branch",
+      "groupName": "next-family major",
+      "matchPackageNames": [
+        "next",
+        "eslint-config-next",
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "matchUpdateTypes": ["major"]
+    },
+    {
+      "description": "Storybook official non-major",
+      "groupName": "storybook-official",
+      "matchPackageNames": [
+        "storybook",
+        "/^@storybook\\//",
+        "eslint-plugin-storybook"
+      ],
+      "matchUpdateTypes": ["patch", "minor"]
+    },
+    {
+      "description": "Storybook official major — run npx storybook@latest upgrade on the branch",
+      "groupName": "storybook-official major",
+      "matchPackageNames": [
+        "storybook",
+        "/^@storybook\\//",
+        "eslint-plugin-storybook"
+      ],
+      "matchUpdateTypes": ["major"]
+    },
+    {
+      "description": "StyleX family, all update types",
+      "groupName": "stylex",
+      "matchPackageNames": ["/^@stylexjs\\//"]
+    },
+    {
+      "description": "TanStack Query family, all update types",
+      "groupName": "tanstack-query",
+      "matchPackageNames": [
+        "@tanstack/react-query",
+        "@tanstack/react-query-devtools",
+        "@tanstack/eslint-plugin-query"
+      ]
+    },
+    {
+      "description": "Vitest and Vite non-major",
+      "groupName": "vitest-vite",
+      "matchPackageNames": ["vitest", "vite", "/^@vitest\\//"],
+      "matchUpdateTypes": ["patch", "minor"]
+    },
+    {
+      "description": "TypeScript major — sequential 5 → 6 → 7, read the TS blog first",
+      "groupName": "typescript major",
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major"]
+    },
+    {
+      "description": "ESLint major — run the official eslint codemod",
+      "groupName": "eslint major",
+      "matchPackageNames": ["eslint"],
+      "matchUpdateTypes": ["major"]
+    }
+  ]
+}

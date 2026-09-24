@@ -1,0 +1,4 @@
+interface:
+  display_name: "Initiative"
+  short_description: "Create a durable working brief"
+  default_prompt: "Use $initiative to create an initiative file from my goal and project context."

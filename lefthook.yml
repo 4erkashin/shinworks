@@ -1,0 +1,60 @@
+commit-msg:
+  commands:
+    conventional:
+      run: node scripts/commit-msg.ts {1}
+
+pre-commit:
+  skip:
+    - merge
+    - rebase
+  parallel: true
+  jobs:
+    - name: format-lint
+      group:
+        piped: true
+        jobs:
+          - name: prettier
+            exclude:
+              - .agents/**
+              - pnpm-lock.yaml
+            run: pnpm exec prettier --write --ignore-unknown {staged_files}
+            stage_fixed: true
+            fail_text: Prettier failed. Fix the files and retry the commit.
+          - name: eslint
+            glob: "*.{js,jsx,ts,tsx,mts,mjs,cjs}"
+            exclude:
+              - scripts/**
+            run: pnpm exec eslint --fix {staged_files}
+            stage_fixed: true
+            fail_text: ESLint failed. Fixable issues are in the working tree. Fix the rest and retry the commit.
+    - name: tokens
+      glob:
+        - "tokens/**/*.json"
+        - "tokens/build.js"
+      run: pnpm tokens:build
+      fail_text: Token build failed. Run pnpm tokens:build.
+    - name: conflict-markers
+      run: node scripts/conflict-markers.ts {staged_files}
+      fail_text: Staged files contain git conflict markers. Resolve them and retry the commit.
+    - name: env-files
+      run: node scripts/forbid-env.ts {staged_files}
+      fail_text: Do not commit .env files. Use .env.example for templates.
+
+pre-push:
+  jobs:
+    - name: unit
+      run: pnpm test:unit
+      fail_text: Unit tests failed. Run pnpm test:unit.
+    - name: typecheck
+      glob:
+        - "*.{ts,tsx,mts,cts}"
+        - "tsconfig*.json"
+        - "package.json"
+        - "pnpm-lock.yaml"
+        - "next.config.*"
+        - "tokens/**/*.json"
+        - "tokens/build.js"
+        - "babel.config.js"
+        - "postcss.config.*"
+      run: pnpm typecheck
+      fail_text: Typecheck failed. Run pnpm typecheck.

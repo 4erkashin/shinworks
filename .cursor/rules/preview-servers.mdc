@@ -1,0 +1,12 @@
+---
+description: Do not start Storybook or the app dev server unless the user asks
+alwaysApply: true
+---
+
+# Preview servers
+
+Default to verifying from the repo: read the code, lint, typecheck, and use a substitute already available (tests, curl against a server **already** running in a terminal).
+
+Start Storybook, `next dev`, or any other long-lived preview/dev server **only when the user explicitly asks**. Do not start one as a default “check the UI” step. Browser automation against a preview you just spawned is the same cost: skip it unless they asked.
+
+If a matching server is already running, reuse that process. Do not spawn a second one.

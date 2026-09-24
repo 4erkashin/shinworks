@@ -1,0 +1,55 @@
+<!--
+  The iframe is a blank page until JS runs.
+  Browsers paint that as light.
+
+  color-scheme: light dark makes the page follow the OS,
+  same as the app's "system" theme (the toolbar default).
+
+  That rule sits in a named layer so StyleX can override it after JS loads.
+  Without the layer, this file would keep winning
+  and the toolbar's light/dark color-scheme would never apply.
+
+  Storybook's loading sheet (.sb-preparing-story) is hardcoded white.
+  It shows if a story takes more than 100ms.
+  Canvas is the browser's name for the page color, which follows color-scheme,
+  so that sheet is not a white flash at night.
+-->
+<style>
+  /**
+   * Lock layer order in this HTML before Vite injects StyleX / globals.
+   * `resets` must stay under StyleX `priority*` or `button { font: inherit }`
+   * from modern-normalize wins and product font-family never shows.
+   */
+  @layer storybook-first-paint, resets, preflight, priority1, priority2,
+    priority3, priority4, priority5, priority6, priority7, priority8,
+    priority9;
+
+  @layer storybook-first-paint {
+    html {
+      color-scheme: light dark;
+      height: 100%;
+    }
+
+    /**
+     * The app locks height on html/body and lets main grow.
+     * This iframe has no layout.tsx, so copy that chain here
+     * without overflow:hidden — docs and tall stories still scroll.
+     */
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    #storybook-root {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+    }
+  }
+
+  .sb-preparing-story,
+  .sb-preparing-docs {
+    background-color: Canvas;
+  }
+</style>

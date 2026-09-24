@@ -1,0 +1,15 @@
+---
+description: When Sonar reader-pack lint fails on product code, rewrite until a reader can follow the function
+globs: "{app,domain,features,i18n,lib,theme,ui}/**/*.{ts,tsx},proxy.ts"
+alwaysApply: false
+---
+
+# Reader pack
+
+ESLint `sonarjs/*` reader rules run on product layers (`app`, `features`, `ui`, `domain`, `theme`, `lib`, `i18n`, `proxy.ts`). The allowlist and threshold live in `eslint.config.js`.
+
+When one fires, extract or rewrite until a person can follow the control flow. A split that only moves the same branching into `foo1` / `foo2` is not done.
+
+Stories, tests, and mocks are out of scope. Do not add the pack there.
+
+`eslint-disable` on these rules is not a fix.

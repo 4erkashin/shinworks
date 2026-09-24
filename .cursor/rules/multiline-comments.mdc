@@ -1,0 +1,32 @@
+---
+description: Plain-English comments; wrap at phrases (soft ~80, hard 120)
+alwaysApply: true
+---
+
+# Comments
+
+Write every comment so tomorrow-you does not WTF: maximum possible plain English,
+no jargon, abbreviations, or clever phrasing to decode.
+
+Use the host language's comment syntax (`//` / `/** */` in JS/TS, `<!-- -->` in HTML,
+`/* */` in CSS). One line stays one line. More than one line uses that language's
+block form — in JS/TS, `/** */` with one `*`-prefixed line per line of text.
+
+```ts
+// one line is fine
+
+/**
+ * More than one line goes in a block,
+ * not stacked `//` lines.
+ */
+```
+
+## Wrap
+
+Soft cap ~80 characters, hard cap 120. Prefer a shorter line when the point is
+already clear. Run a bit past 80 when that keeps a phrase intact.
+
+Break between phrases: after a comma or period; before a coordinating *and* /
+*but* / *or* / *so* that starts a new clause. Keep a number with its unit
+(`100ms`), a slash-pair (`light/dark`), and a possessive with its noun
+(`browser's name`).
