@@ -41,7 +41,7 @@ jobs:
       url: ${{ steps.deploy.outputs.url }}
     env:
       VERCEL_ORG_ID: team_YrVcbYkLqoCTzSAZ7j4pJHNC
-      VERCEL_PROJECT_ID: prj_FH1ivQlxf7TAW2eVBlstRO5UiXgj
+      VERCEL_PROJECT_ID: prj_R8kqo57VfvudrRbmjuicwmcPzdpk
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - uses: actions/checkout@v5
@@ -58,10 +58,10 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://nextjs-template-theta-ten.vercel.app/
+      url: https://shinworks.dev/
     env:
       VERCEL_ORG_ID: team_YrVcbYkLqoCTzSAZ7j4pJHNC
-      VERCEL_PROJECT_ID: prj_AOUtpu53eTTvAKgfxm2QafOpyJQ9
+      VERCEL_PROJECT_ID: prj_IME7QdaDZxBtvfJ5JZAIHenTC1WM
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - uses: actions/checkout@v5

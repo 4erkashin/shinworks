@@ -17,13 +17,13 @@ Storybook is a separate deploy; keep it out of the Next app’s robots/sitemap.
 
 ## Repo context (verified)
 
-| Fact | Evidence |
-| --- | --- |
-| Next `16.3.3`, React 19, next-intl `4.14.1` | `package.json` |
-| App Router under `app/`, locales in `app/[locale]/` | filesystem |
-| Locales `en`, `pt-BR`, `ru`, `uk`; `localePrefix: "as-needed"` | `i18n/routing.ts` |
-| No `robots.ts` / `robots.txt` / `sitemap.ts` / `sitemap.xml` | confirmed absent under `app/` and `public/` |
-| `metadataBase` from `SITE_URL` (fallback Vercel URL / localhost) | `app/[locale]/layout.tsx` → `generateMetadata` |
+| Fact                                                             | Evidence                                                                           |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Next `16.3.3`, React 19, next-intl `4.14.1`                      | `package.json`                                                                     |
+| App Router under `app/`, locales in `app/[locale]/`              | filesystem                                                                         |
+| Locales `en`, `pt-BR`, `ru`, `uk`; `localePrefix: "as-needed"`   | `i18n/routing.ts`                                                                  |
+| No `robots.ts` / `robots.txt` / `sitemap.ts` / `sitemap.xml`     | confirmed absent under `app/` and `public/`                                        |
+| `metadataBase` from `SITE_URL` (fallback Vercel URL / localhost) | `app/[locale]/layout.tsx` → `generateMetadata`                                     |
 | `proxy.ts` matcher skips paths with a file extension (`.*\\..*`) | `proxy.ts` — so `/robots.txt` and `/sitemap.xml` would bypass next-intl once added |
 
 ---
@@ -103,15 +103,15 @@ Sources: installed `…/01-metadata/sitemap.md`; `…/04-functions/generate-site
 
 Documented return type (sitemap.md “Returns” + `SitemapFile` in `metadata-interface.d.ts`):
 
-| Field | Role |
-| --- | --- |
-| `url` | Required location string (examples always absolute) |
-| `lastModified` | optional `string \| Date` → `<lastmod>` |
-| `changeFrequency` | optional enum → `<changefreq>` |
-| `priority` | optional number → `<priority>` |
-| `alternates.languages` | optional map → `xhtml:link` hreflang |
-| `images` | optional string[] → image sitemap extension |
-| `videos` | optional video objects → video extension |
+| Field                  | Role                                                |
+| ---------------------- | --------------------------------------------------- |
+| `url`                  | Required location string (examples always absolute) |
+| `lastModified`         | optional `string \| Date` → `<lastmod>`             |
+| `changeFrequency`      | optional enum → `<changefreq>`                      |
+| `priority`             | optional number → `<priority>`                      |
+| `alternates.languages` | optional map → `xhtml:link` hreflang                |
+| `images`               | optional string[] → image sitemap extension         |
+| `videos`               | optional video objects → video extension            |
 
 ### Multiple sitemaps / `generateSitemaps`
 
@@ -134,10 +134,10 @@ Same as robots: **no default sitemap**. Docs only describe behavior once a file 
 
 From https://www.sitemaps.org/protocol.html (“Using Sitemap index files”):
 
-- Max **50,000 URLs** per sitemap file  
-- Max **50MB (52,428,800 bytes)** uncompressed (gzip allowed; limit applies after decompress)  
-- Index files: same size/count caps for listed sitemaps  
-- `<loc>` must include protocol; length &lt; 2,048 characters  
+- Max **50,000 URLs** per sitemap file
+- Max **50MB (52,428,800 bytes)** uncompressed (gzip allowed; limit applies after decompress)
+- Index files: same size/count caps for listed sitemaps
+- `<loc>` must include protocol; length &lt; 2,048 characters
 - Strongly recommend sitemap at the **site root** so it can include all paths under that host
 
 Google restates the 50k / 50MB limits and: use **fully-qualified absolute URLs**; relative paths like `/mypage.html` are wrong.  
@@ -149,7 +149,7 @@ Google also notes it **ignores** `<changefreq>` and `<priority>`; it may use `<l
 
 https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview
 
-- **Might need:** large sites; **new sites with few external links**; lots of media/News.  
+- **Might need:** large sites; **new sites with few external links**; lots of media/News.
 - **Might not need:** “small” (~**500 pages or fewer** that should appear in results); comprehensively linked internally; little media/News need.
 
 A sitemap helps discovery; it does **not** guarantee crawl/index.
@@ -209,13 +209,13 @@ https://developers.google.com/search/docs/specialty/international/localized-vers
 
 ### Where primary sources agree / stay silent
 
-| Topic | Status |
-| --- | --- |
-| Sitemap can carry hreflang via xhtml links | Next + Google agree |
-| `alternates.languages` is a documented Next field | Next yes |
-| next-intl documents combining that field with `getPathname` | next-intl yes |
-| Whether Next’s **example** shape (one `<url>` with only *other* languages in `languages`, no self-link, not one row per locale) satisfies Google’s “each URL lists all including self” pattern | **Not reconciled in one primary source** — report both shapes; do not invent a single “correct” Next+Google merge beyond citing Google’s page if you need Google-compliant XML |
-| Whether shinworks *must* duplicate Link-header hreflang into the sitemap | next-intl: Link header alone is enough for engines; sitemap optional for extras |
+| Topic                                                                                                                                                                                          | Status                                                                                                                                                                         |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Sitemap can carry hreflang via xhtml links                                                                                                                                                     | Next + Google agree                                                                                                                                                            |
+| `alternates.languages` is a documented Next field                                                                                                                                              | Next yes                                                                                                                                                                       |
+| next-intl documents combining that field with `getPathname`                                                                                                                                    | next-intl yes                                                                                                                                                                  |
+| Whether Next’s **example** shape (one `<url>` with only _other_ languages in `languages`, no self-link, not one row per locale) satisfies Google’s “each URL lists all including self” pattern | **Not reconciled in one primary source** — report both shapes; do not invent a single “correct” Next+Google merge beyond citing Google’s page if you need Google-compliant XML |
+| Whether shinworks _must_ duplicate Link-header hreflang into the sitemap                                                                                                                       | next-intl: Link header alone is enough for engines; sitemap optional for extras                                                                                                |
 
 For this site’s URLs under `as-needed`: default locale home is `/`; others are `/pt-BR`, `/ru`, `/uk` (per next-intl `localePrefix` docs). Absolute URLs need the production origin from `SITE_URL`.
 
@@ -223,12 +223,12 @@ For this site’s URLs under `as-needed`: default locale home is `/`; others are
 
 ## 5. Tiny personal site: need either file?
 
-| Layer | Verdict |
-| --- | --- |
+| Layer                                  | Verdict                                                                                            |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | **Robots Exclusion Protocol / Google** | robots.txt optional; missing/4xx → crawl may proceed (RFC 9309 unavailable; Google implicit allow) |
-| **Sitemap protocol / Google** | Optional; small well-linked sites often fine without; new/low-link sites may benefit |
-| **Next.js** | No auto-generated robots/sitemap when files absent — not a framework default, just missing routes |
-| **next-intl** | Already exposes locale alternates via `Link` headers |
+| **Sitemap protocol / Google**          | Optional; small well-linked sites often fine without; new/low-link sites may benefit               |
+| **Next.js**                            | No auto-generated robots/sitemap when files absent — not a framework default, just missing routes  |
+| **next-intl**                          | Already exposes locale alternates via `Link` headers                                               |
 
 So: **specs allow omitting both**; **Next does not fill the gap**. For an under-construction localized home, omitting both is coherent. Add both when you care about proactive discovery / Search Console.
 
@@ -236,18 +236,18 @@ So: **specs allow omitting both**; **Next does not fill the gap**. For an under-
 
 ## 6. Production gotchas (documented)
 
-| Gotcha | Source |
-| --- | --- |
-| Accidental `Disallow: /` (or per-bot disallow of `/`) blocks crawling of the whole site | Next robots examples show this pattern for selected bots; Google create-robots-txt shows `Disallow: /` as “block all crawlers” for that group |
-| `Sitemap:` URL must be **absolute** / fully qualified | Google create-robots-txt; sitemaps.org robots.txt submission; Next examples always absolute |
-| Sitemap `<loc>` and image/video/alternate hrefs should be absolute | Google build-sitemap; Next serializer does not apply `metadataBase` |
-| robots / sitemap Route Handlers **cached by default**; Request-time APIs / dynamic config opt out | robots.md, sitemap.md, metadata files index |
-| With `proxy.ts` / middleware, exclude metadata paths in `matcher` if locale middleware would rewrite them | metadata `index.md`; shinworks matcher already skips `.*\\..*` |
-| `generateSitemaps` `id` is now a **Promise&lt;string&gt;** (breaking vs older sync `id`) | sitemap.md / generate-sitemaps.md v16.0.0 |
-| Dev vs prod URL shape for multi-sitemaps changed in v15 | generate-sitemaps.md |
-| Trailing slash / basePath | Next trailingSlash docs don’t special-case robots/sitemap; next-intl documents basePath/trailingSlash for middleware/navigation (getPathname omits basePath — prefix manually). **Not found:** Next robots/sitemap docs discussing trailingSlash or basePath specifically |
-| Draft/preview disallow | **Not found** in Next robots/sitemap primary docs as a built-in |
-| Host directive | Present on `MetadataRoute.Robots`; Google’s documented robots rules list focuses on user-agent / allow / disallow / sitemap — treat `host` as non-universal |
+| Gotcha                                                                                                    | Source                                                                                                                                                                                                                                                                    |
+| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Accidental `Disallow: /` (or per-bot disallow of `/`) blocks crawling of the whole site                   | Next robots examples show this pattern for selected bots; Google create-robots-txt shows `Disallow: /` as “block all crawlers” for that group                                                                                                                             |
+| `Sitemap:` URL must be **absolute** / fully qualified                                                     | Google create-robots-txt; sitemaps.org robots.txt submission; Next examples always absolute                                                                                                                                                                               |
+| Sitemap `<loc>` and image/video/alternate hrefs should be absolute                                        | Google build-sitemap; Next serializer does not apply `metadataBase`                                                                                                                                                                                                       |
+| robots / sitemap Route Handlers **cached by default**; Request-time APIs / dynamic config opt out         | robots.md, sitemap.md, metadata files index                                                                                                                                                                                                                               |
+| With `proxy.ts` / middleware, exclude metadata paths in `matcher` if locale middleware would rewrite them | metadata `index.md`; shinworks matcher already skips `.*\\..*`                                                                                                                                                                                                            |
+| `generateSitemaps` `id` is now a **Promise&lt;string&gt;** (breaking vs older sync `id`)                  | sitemap.md / generate-sitemaps.md v16.0.0                                                                                                                                                                                                                                 |
+| Dev vs prod URL shape for multi-sitemaps changed in v15                                                   | generate-sitemaps.md                                                                                                                                                                                                                                                      |
+| Trailing slash / basePath                                                                                 | Next trailingSlash docs don’t special-case robots/sitemap; next-intl documents basePath/trailingSlash for middleware/navigation (getPathname omits basePath — prefix manually). **Not found:** Next robots/sitemap docs discussing trailingSlash or basePath specifically |
+| Draft/preview disallow                                                                                    | **Not found** in Next robots/sitemap primary docs as a built-in                                                                                                                                                                                                           |
+| Host directive                                                                                            | Present on `MetadataRoute.Robots`; Google’s documented robots rules list focuses on user-agent / allow / disallow / sitemap — treat `host` as non-universal                                                                                                               |
 
 ---
 
@@ -255,14 +255,14 @@ So: **specs allow omitting both**; **Next does not fill the gap**. For an under-
 
 From installed + live version history tables (no memory claims beyond these):
 
-| Version | Change |
-| --- | --- |
-| **v16.3.0** | robots `other` field for non-standard directives |
-| **v16.0.0** | `generateSitemaps` / sitemap `id` is `Promise&lt;string&gt;` |
-| **v15.0.0** | `generateSitemaps` consistent URLs in dev and production |
-| **v14.2.0** | Sitemap localizations (`alternates`) |
-| **v13.4.14** | `changeFrequency` / `priority` |
-| **v13.3.x** | robots / sitemap / generateSitemaps introduced |
+| Version      | Change                                                       |
+| ------------ | ------------------------------------------------------------ |
+| **v16.3.0**  | robots `other` field for non-standard directives             |
+| **v16.0.0**  | `generateSitemaps` / sitemap `id` is `Promise&lt;string&gt;` |
+| **v15.0.0**  | `generateSitemaps` consistent URLs in dev and production     |
+| **v14.2.0**  | Sitemap localizations (`alternates`)                         |
+| **v13.4.14** | `changeFrequency` / `priority`                               |
+| **v13.3.x**  | robots / sitemap / generateSitemaps introduced               |
 
 **Installed docs vs live docs (Sep 24, 2026):** robots, sitemap, and generate-sitemaps pages matched in substance (same APIs, same version history rows, same examples). No material disagreement found for this topic.
 

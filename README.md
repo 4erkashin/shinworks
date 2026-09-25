@@ -40,12 +40,12 @@ No `.env*` file is required for local development. `pnpm storybook` starts Story
 
 Names and comments live in `.env.example`. Every value there is commented. `.env*` stays gitignored except that example, and none of these variables is a secret.
 
-| Variable | Where it is read | Unset | Set when |
-| --- | --- | --- | --- |
-| `NEXT_PUBLIC_MSW` | App (`mocks/msw-gate.tsx`) | The browser worker stays on in `pnpm dev`. | `0` turns that worker off. |
-| `SITE_URL` | App (`app/[locale]/layout.tsx`) | `metadataBase` is `http://localhost:3000`, or `https://${VERCEL_URL}` when that host is set. | App project: the canonical app origin, once the domain exists. |
-| `STORYBOOK_OG_BASE_URL` | Storybook build (`app/[locale]/page.stories.tsx`) | OG image URLs use `http://localhost:3000`. | Storybook project: the same canonical app origin as `SITE_URL`. |
-| `STORYBOOK_URL` | App (`lib/environment.ts`) | `readEnvironmentVariable` returns nothing. No caller uses it, and the home page does not link Storybook. | App project: the Storybook production origin, once that domain exists. |
+| Variable                | Where it is read                                  | Unset                                                                                                    | Set when                                                               |
+| ----------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `NEXT_PUBLIC_MSW`       | App (`mocks/msw-gate.tsx`)                        | The browser worker stays on in `pnpm dev`.                                                               | `0` turns that worker off.                                             |
+| `SITE_URL`              | App (`app/[locale]/layout.tsx`)                   | `metadataBase` is `http://localhost:3000`, or `https://${VERCEL_URL}` when that host is set.             | App project: the canonical app origin, once the domain exists.         |
+| `STORYBOOK_OG_BASE_URL` | Storybook build (`app/[locale]/page.stories.tsx`) | OG image URLs use `http://localhost:3000`.                                                               | Storybook project: the same canonical app origin as `SITE_URL`.        |
+| `STORYBOOK_URL`         | App (`lib/environment.ts`)                        | `readEnvironmentVariable` returns nothing. No caller uses it, and the home page does not link Storybook. | App project: the Storybook production origin, once that domain exists. |
 
 The app and Storybook are separate Vercel projects. Those production origins are not assigned yet, so the example file keeps `https://example.com` and `http://localhost:6006` as commented samples only.
 
