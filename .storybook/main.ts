@@ -4,6 +4,7 @@ import stylex from "@stylexjs/unplugin";
 import autoprefixer from "autoprefixer";
 import path from "node:path";
 import { themes } from "storybook/theming";
+import svgr from "vite-plugin-svgr";
 
 // Relative path: Node loads this file, so @/ aliases do not work.
 import { stylexOptions } from "../babel.config.js";
@@ -46,7 +47,19 @@ const config: StorybookConfig = {
     "msw-storybook-addon",
     "storybook-next-intl",
   ],
-  framework: "@storybook/nextjs-vite",
+  framework: {
+    name: "@storybook/nextjs-vite",
+    options: {
+      /**
+       * Next turns every `.svg` import into a component.
+       * This plugin would turn the same import into
+       * `{ src, width, height }`, which React cannot render.
+       */
+      image: {
+        excludeFiles: ["**/*.svg"],
+      },
+    },
+  },
   managerHead: appendShellFirstPaint,
   staticDirs: ["../public"],
   stories: [
@@ -83,6 +96,9 @@ const config: StorybookConfig = {
     const mode =
       process.env.NODE_ENV === "production" ? "production" : "development";
     const fileEnv = loadEnv(mode, repoRoot, "");
+    const contactEmail =
+      process.env.CONTACT_EMAIL || fileEnv.CONTACT_EMAIL || "";
+    const githubUrl = process.env.GITHUB_URL || fileEnv.GITHUB_URL || "";
     const storybookUrl =
       process.env.STORYBOOK_URL || fileEnv.STORYBOOK_URL || "";
     const storybookOgBaseUrl =
@@ -97,10 +113,18 @@ const config: StorybookConfig = {
         },
       },
       define: {
+        "process.env.CONTACT_EMAIL": JSON.stringify(contactEmail),
+        "process.env.GITHUB_URL": JSON.stringify(githubUrl),
         "process.env.STORYBOOK_OG_BASE_URL": JSON.stringify(storybookOgBaseUrl),
         "process.env.STORYBOOK_URL": JSON.stringify(storybookUrl),
       },
       plugins: [
+        /**
+         * The Next image plugin skips `.svg` above, so this
+         * plugin turns each import into a component, matching Next.
+         * The query is optional: Vite sometimes appends one.
+         */
+        svgr({ include: /\.svg(?:\?|$)/ }),
         stylexConstsPreloadPlugin(),
         stylex.vite({
           ...stylexOptions,
