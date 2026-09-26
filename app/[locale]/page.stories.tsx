@@ -29,8 +29,8 @@ const meta = {
     docs: {
       description: {
         component: `
-Home page is the glitch title, the locale switcher, and the theme
-switcher on the page grid.
+Home page is a column of GitHub, Storybook, and email tiles,
+the locale switcher, and the theme switcher on the page grid.
 
 Each viewport story is one named size. Tiles inside it are
 English on the left and one other locale on the right, then

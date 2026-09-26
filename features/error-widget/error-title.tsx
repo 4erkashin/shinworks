@@ -22,7 +22,7 @@ function millisecondsBetween(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
 
-export function HomeTitle({ children }: { children: ReactNode }) {
+export function ErrorTitle({ children }: { children: ReactNode }) {
   const [playing, setPlaying] = useState(false);
   // Hover holds the glitch on so the timed run can be checked by hand.
   const [hovered, setHovered] = useState(false);
