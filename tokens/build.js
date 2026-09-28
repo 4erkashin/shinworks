@@ -16,6 +16,40 @@ const tokenSets = JSON.parse(
 );
 
 /**
+ * The JSON aliases include the set name, as in `{primitive.color.ink}`,
+ * so a single-file reader can find the token. This build removes that
+ * set name before resolving, so the alias has to lose it too.
+ *
+ * @param {unknown} node
+ * @param {Set<string>} setNames
+ * @returns {unknown}
+ */
+function dropSetNameFromAliases(node, setNames) {
+  if (typeof node === "string") {
+    return node.replaceAll(/\{([^{}]+)\}/g, (match, reference) => {
+      const name = reference.trim();
+      const dot = name.indexOf(".");
+      if (dot === -1) return match;
+      const setName = name.slice(0, dot);
+      if (!setNames.has(setName)) return match;
+      return `{${name.slice(dot + 1)}}`;
+    });
+  }
+  if (Array.isArray(node)) {
+    return node.map((item) => dropSetNameFromAliases(item, setNames));
+  }
+  if (node !== null && typeof node === "object") {
+    return Object.fromEntries(
+      Object.entries(node).map(([key, value]) => [
+        key,
+        dropSetNameFromAliases(value, setNames),
+      ]),
+    );
+  }
+  return node;
+}
+
+/**
  * @param {string[]} sets
  * @returns {Promise<Map<string, string>>}
  */
@@ -51,14 +85,21 @@ async function resolveSets(sets) {
       },
     },
     preprocessors: ["tokens-studio"],
-    // Select sets before removing their wrappers; metadata is not token input.
-    tokens: Object.fromEntries(
-      sets.map((set) => {
-        if (!tokenSets[set]) {
-          throw new Error(`tokens/tokens.json must define the ${set} set`);
-        }
-        return [set, tokenSets[set]];
-      }),
+    /**
+     * Pick the sets for this theme, then drop the set name from aliases.
+     * The tokens-studio preprocessor removes those set wrappers next,
+     * and metadata is not token input.
+     */
+    tokens: dropSetNameFromAliases(
+      Object.fromEntries(
+        sets.map((set) => {
+          if (!tokenSets[set]) {
+            throw new Error(`tokens/tokens.json must define the ${set} set`);
+          }
+          return [set, tokenSets[set]];
+        }),
+      ),
+      new Set(sets),
     ),
   });
 
