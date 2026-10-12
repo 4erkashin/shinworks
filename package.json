@@ -61,7 +61,7 @@
     "lefthook": "2.1.10",
     "modern-normalize": "3.0.1",
     "msw": "2.15.0",
-    "msw-storybook-addon": "3.0.0",
+    "msw-storybook-addon": "3.0.3",
     "playwright": "1.62.1",
     "postcss": "8.5.26",
     "prettier": "3.9.6",
